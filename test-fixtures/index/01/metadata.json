@@ -1,0 +1,14 @@
+{
+  "description": "Should mock simple query",
+  "query": "SELECT * FROM foobar",
+  "dbResults": [
+    {
+      "results": [
+        {"foo": "bar"}
+      ]
+    }
+  ],
+  "expectedResults": [
+    {"foo": "bar"}
+  ]
+}

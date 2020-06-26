@@ -1,0 +1,19 @@
+{
+  "description": "Should mock complex query and find no results",
+  "query": "SELECT * FROM foobar WHERE foo = ?",
+  "args": {
+    "foo": "bar"
+  },
+  "dbResults": [
+    {
+      "results": [
+        {"foo": "bar"}
+      ],
+      "expectedArgs": {
+        "foo": "fubar"
+      },
+      "queryPattern": "^SELECT "
+    }
+  ],
+  "expectedResults": []
+}

@@ -1,0 +1,15 @@
+{
+  "description": "Should mock simple query with connection pool",
+  "usePool": true,
+  "query": "SELECT * FROM foobar",
+  "dbResults": [
+    {
+      "results": [
+        {"foo": "bar"}
+      ]
+    }
+  ],
+  "expectedResults": [
+    {"foo": "bar"}
+  ]
+}
