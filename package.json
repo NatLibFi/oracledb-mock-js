@@ -23,22 +23,13 @@
 		"access": "public"
 	},
 	"scripts": {
-		"build": "esbuild \"src/**/*.js\" --sourcemap --platform=node --outdir=dist",
-		"test:base": "node --test --test-force-exit --experimental-test-coverage --test-reporter=spec './src/**/*.test.js'",
-		"dev:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test node --watch --test --experimental-test-coverage --test-reporter=spec './src/**/*.test.js'"
-	},
-	"oldScripts":{
 		"prepare": "npm run build",
-		"build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist",
+		"build": "esbuild \"src/**/*.js\" --sourcemap --platform=node --outdir=dist",
 		"lint": "eslint ./src",
 		"lint:dev": "eslint --fix ./src",
 		"test": "npm run lint && npm run test:base",
-		"test:base": "cross-env NODE_ENV=test nyc mocha --package ./package.json",
-		"test:dev": "npm run lint:dev && npm run test:base",
-		"coverage": "nyc check-coverage --per-file",
-		"dev": "nodemon",
-		"dev:debug": "cross-env LOG_LEVEL=debug DEBUG=@natlibfi/* NODE_ENV=test nodemon",
-		"watch:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test nodemon -w src -w test-fixtures --exec 'npm run test:dev'"
+		"test:base": "node --test --test-force-exit --experimental-test-coverage --test-reporter=spec './src/**/*.test.js'",
+		"dev:test": "cross-env DEBUG=@natlibfi/* NODE_ENV=test node --watch --test --experimental-test-coverage --test-reporter=spec './src/**/*.test.js'"
 	},
 	"dependencies": {
 		"deep-eql": "^4.1.4"
