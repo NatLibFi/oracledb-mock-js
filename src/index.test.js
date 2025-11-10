@@ -26,13 +26,13 @@
 *
 */
 
-import createMock from '.';
+import createMock from './index.js';
 import generateTests from '@natlibfi/fixugen';
-import {expect} from 'chai';
+import assert from 'node:assert';
 
 generateTests({
   useMetadataFile: true,
-  path: [__dirname, '..', 'test-fixtures'],
+  path: [import.meta.dirname, '..', 'test-fixtures'],
   callback: async ({dbResults, usePool = false, expectedResults, query, args = {}}) => {
     const mock = createMock();
 
@@ -44,7 +44,8 @@ generateTests({
       const {resultSet} = await connection.execute(query, args);
       const results = await fetchResults(resultSet);
 
-      expect(results).to.eql(expectedResults);
+      //expect(results).to.eql(expectedResults);
+      assert.deepEqual(results, expectedResults);
 
       await connection.close();
       await pool.close();
@@ -57,8 +58,8 @@ generateTests({
     const {resultSet} = await connection.execute(query, args);
     const results = await fetchResults(resultSet);
 
-    expect(results).to.eql(expectedResults);
-
+   // expect(results).to.eql(expectedResults);
+    assert.deepEqual(results, expectedResults);
     await connection.close();
     mock._clear();
 

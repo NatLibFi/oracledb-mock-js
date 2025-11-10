@@ -1,0 +1,105 @@
+# Melinda node tests and publish
+
+name: Melinda-node-tests-and-publish
+
+on: push
+
+permissions: # Required for trusted publishing https://docs.npmjs.com/trusted-publishers
+  id-token: write
+  contents: read
+
+jobs:
+
+  ### TESTS
+
+  build-node-versions:
+    name: Node version matrix
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x, 24.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v5
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+      env:
+        NPM_CONFIG_IGNORE_SCRIPTS: true
+    - run: npm audit --package-lock-only --production --audit-level=moderate
+    - run: npm i
+    - run: npm test
+    - run: npm run build --if-present
+
+  njsscan:
+    name: Njsscan-check
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v5
+    - name: nodejsscan scan
+      id: njsscan
+      uses: ajinabraham/njsscan-action@master
+      with:
+        args: '.'
+
+  license-scan:
+    name: License compliance check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: mikaelvesavuori/license-compliance-action@v1.0.2
+        with:
+          exclude_pattern: /^@natlibfi/
+
+  # publish:
+  #   runs-on: ubuntu-latest
+  #   needs: [build-node-versions, njsscan]
+  #   if: contains(github.ref, 'refs/tags/')
+
+  #   steps:
+  #     - uses: actions/checkout@v5
+  #     # Setup .npmrc file to publish to npm
+  #     - uses: actions/setup-node@v6
+  #       with:
+  #         node-version: '22.x'
+  #         registry-url: 'https://registry.npmjs.org'
+  #     - run: npm i
+  #     - run: npm publish
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.ORACLEDB_MOCK_NPM_TOKEN }}
+
+## PUBLISH
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [build-node-versions, njsscan]
+    if: contains(github.ref, 'refs/tags/')
+
+    steps:
+      - uses: actions/checkout@v5
+      # Setup .npmrc file to publish to npm
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Update npm
+        run: npm install -g npm@latest
+      - name: Clean install
+        run: npm ci
+      # Add build step here if you don't have prepare script
+      # Publish stable release with --tag=latest
+      - name: Publish stable release
+        if: ${{!contains(github.ref, '-alpha')}}
+        run: npm publish --tag=latest
+      # Publish pre-release without --tag latest
+      - name: Publish pre-release
+        if: contains(github.ref, '-alpha')
+        run: npm publish --tag=next

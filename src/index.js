@@ -36,15 +36,15 @@ export default () => {
   };
 
   const connection = {
-    close: () => {}, // eslint-disable-line no-empty-function
-    break: () => {}, // eslint-disable-line no-empty-function
+    close: () => {},
+    break: () => {},
     execute: (query, args) => {
       const rows = getRows();
 
       return {
         resultSet: {
-          getRow: () => rows.shift(), // eslint-disable-line functional/immutable-data
-          close: () => {} // eslint-disable-line no-empty-function
+          getRow: () => rows.shift(),
+          close: () => {}
         }
       };
 
@@ -58,7 +58,7 @@ export default () => {
         });
 
         if (index >= 0) {
-          const {results} = options.splice(index, 1).shift(); // eslint-disable-line functional/immutable-data
+          const {results} = options.splice(index, 1).shift();
           return results;
         }
 
@@ -71,19 +71,19 @@ export default () => {
     getConnection: () => connection,
     createPool: () => ({
       getConnection: () => connection,
-      close: () => {} // eslint-disable-line no-empty-function
+      close: () => {}
     }),
     _clear: () => {
       // Clear array
-      options.splice(0); // eslint-disable-line functional/immutable-data
-      Object.keys(options).forEach(k => delete options[k]); // eslint-disable-line functional/immutable-data
+      options.splice(0);
+      Object.keys(options).forEach(k => delete options[k]);
     },
     _execute: optList => {
       // Clear array
-      options.splice(0); // eslint-disable-line functional/immutable-data
+      options.splice(0);
 
       optList.forEach(opts => {
-        options.push({...DEFAULT_OPTIONS, ...opts}); // eslint-disable-line functional/immutable-data
+        options.push({...DEFAULT_OPTIONS, ...opts});
       });
     }
   };
