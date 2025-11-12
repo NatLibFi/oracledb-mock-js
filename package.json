@@ -13,7 +13,7 @@
 		"url": "https://github.com/NatLibFi/oracledb-mock-js"
 	},
 	"license": "LGPL-3.0+",
-	"version": "2.0.0",
+	"version": "2.0.1-alpha.1",
 	"type": "module",
 	"main": "./dist/index.js",
 	"engines": {
@@ -38,7 +38,7 @@
 		"@natlibfi/fixugen": "^3.0.0",
 		"@natlibfi/fixura": "^4.0.0",
 		"cross-env": "^10.1.0",
-		"esbuild": "^0.25.12",
+		"esbuild": "^0.27.0",
 		"eslint": "^9.39.1"
 	}
 }
