@@ -24,7 +24,7 @@ async function operate(oracledb) {
   const {resultSet} = await connection.execute('SELECT * from foobar');
   const row = await resultSet.getRow();
   // do something with `{foo: 'bar'}`
-  return connection.close();  
+  return connection.close();
 }
 ```
 ## Mocking queries
@@ -35,6 +35,6 @@ The `_execute` method initializes the mock with expected queries and their resul
 
 ## License and copyright
 
-Copyright (c) 2020, 2025 **University Of Helsinki (The National Library Of Finland)**
+Copyright (c) 2020, 2026 **University Of Helsinki (The National Library Of Finland)**
 
 This project's source code is licensed under the terms of **GNU Lesser General Public License Version 3** or any later version.
